@@ -97,7 +97,7 @@ namespace Microsoft.BotBuilderSamples.Bots
                 // Get card from result
                 AdaptiveCard card = result.Card;
 
-                return card;
+                await card;
                 
 
                 // Optional: check for any parse warnings
