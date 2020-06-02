@@ -52,7 +52,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         {
             try
             {
-                /*var httpClient = new HttpClient();
+                var httpClient = new HttpClient();
 
                 var qnaMaker = new QnAMaker(new QnAMakerEndpoint
                 {
@@ -86,85 +86,14 @@ namespace Microsoft.BotBuilderSamples.Bots
                 {
                     OmnichannelBotClient.BridgeBotMessage(replyActivity);
                 }
-                */
-
-                /*
-                Random r = new Random();
-                var cardAttachment = CreateAdaptiveCardAttachment(_cards[r.Next(_cards.Length)]);
-
-                //turnContext.Activity.Attachments = new List<Attachment>() { cardAttachment };
-                await turnContext.SendActivityAsync(MessageFactory.Attachment(cardAttachment), cancellationToken);
-                await turnContext.SendActivityAsync(MessageFactory.Text("Please enter any text to see another card."), cancellationToken);
-                */
-
-                // Optional: check for any parse warnings
-                // This includes things like unknown element "type"
-                // or unknown properties on element
-                //IList<AdaptiveWarning> warnings = result.Warnings;
-
+                
                 //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
-                //await turnContext.SendActivityAsync(replyActivity, cancellationToken);
-
-                #region Card One
-                // Create a CardImage and add our image
-                List<CardImage> cardImages1 = new List<CardImage>();
-                cardImages1.Add(new CardImage(url: "https://www.howtogeek.com/wp-content/uploads/2018/06/shutterstock_1006988770.png"));
-                // Create a CardAction to make the HeroCard clickable
-                // Note this does not work in some Skype clients
-                CardAction btnAiHelpWebsite = new CardAction()
-                {
-                    Type = "openUrl",
-                    Title = "AiHelpWebsite.com",
-                    Value = "http://AiHelpWebsite.com"
-                };
-                // Finally create the Hero Card
-                // adding the image and the CardAction
-                ThumbnailCard plCard1 = new ThumbnailCard()
-                {
-                    Title = "Ai Help Website - Number Guesser",
-                    Subtitle = "Hi Welcome! - Guess a number between 1 and 5",
-                    Tap = btnAiHelpWebsite
-                };
-                // Create an Attachment by calling the
-                // ToAttachment() method of the Hero Card
-                Attachment plAttachment1 = plCard1.ToAttachment();
-
-
-                #endregion
-
-
-                #region Card Two
-                List<CardImage> cardImages2 = new List<CardImage>();
-                cardImages2.Add(new CardImage(url: "https://www.wikihow.com/images/thumb/d/db/Get-the-URL-for-Pictures-Step-2-Version-6.jpg/aid597183-v4-728px-Get-the-URL-for-Pictures-Step-2-Version-6.jpg.webp"));
-                // CardAction to make the HeroCard clickable
-                CardAction btnTutorial = new CardAction()
-                {
-                    Type = "openUrl",
-                    Title = "http://bit.ly/2bRyJMj",
-                    Value = "http://bit.ly/2bRyJMj"
-                };
-                ThumbnailCard plCard2 = new ThumbnailCard()
-                {
-                    Title = "Based on the Using Dialogs Tutorial",
-                    Subtitle = "http://bit.ly/2bRyJMj",
-                    Tap = btnTutorial
-                };
-                Attachment plAttachment2 = plCard2.ToAttachment();
-                #endregion
-
-
-                var response = MessageFactory.Attachment(plAttachment1);
-                response.Attachments.Add(plAttachment2);
-                response.AttachmentLayout = "carousel";
-                await turnContext.SendActivityAsync(response, cancellationToken);
-                await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
-
-
+                await turnContext.SendActivityAsync(replyActivity, cancellationToken);
 
             }
 
-            catch (AdaptiveSerializationException ex)
+            catch (Exception ex)
             {
                 await turnContext.SendActivityAsync(MessageFactory.Text(ex.ToString()), cancellationToken);
             }
