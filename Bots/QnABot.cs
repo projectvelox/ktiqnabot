@@ -16,6 +16,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using EchoBot.OmniChannel;
+using AdaptiveCards;
 
 namespace Microsoft.BotBuilderSamples.Bots
 {
@@ -50,7 +51,7 @@ namespace Microsoft.BotBuilderSamples.Bots
         {
             try
             {
-                var httpClient = new HttpClient();
+                /*var httpClient = new HttpClient();
 
                 var qnaMaker = new QnAMaker(new QnAMakerEndpoint
                 {
@@ -84,14 +85,30 @@ namespace Microsoft.BotBuilderSamples.Bots
                 {
                     OmnichannelBotClient.BridgeBotMessage(replyActivity);
                 }
-                
+                */
+
+                var client = new HttpClient();
+                var response = await client.GetAsync("http://adaptivecards.io/payloads/ActivityUpdate.json");
+                var json = await response.Content.ReadAsStringAsync();
+
+                // Parse the JSON 
+                AdaptiveCardParseResult result = AdaptiveCard.FromJson(json);
+
+                // Get card from result
+                AdaptiveCard card = result.Card;
+
+                // Optional: check for any parse warnings
+                // This includes things like unknown element "type"
+                // or unknown properties on element
+                IList<AdaptiveWarning> warnings = result.Warnings;
+
                 //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
                 await turnContext.SendActivityAsync(replyActivity, cancellationToken);
 
             }
 
-            catch (Exception ex)
+            catch (AdaptiveSerializationException ex)
             {
                 await turnContext.SendActivityAsync(MessageFactory.Text(ex.ToString()), cancellationToken);
             }
