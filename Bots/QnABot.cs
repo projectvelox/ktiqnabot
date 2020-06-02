@@ -87,18 +87,13 @@ namespace Microsoft.BotBuilderSamples.Bots
                 }
                 */
 
-                var client = new HttpClient();
-                var response = await client.GetAsync("http://adaptivecards.io/payloads/ActivityUpdate.json");
-                var json = await response.Content.ReadAsStringAsync();
+                if(turnContext.Activity.Type = ActivityTypes.Message)
+                {
+                    var response = turnContext.Activity.CreateReply();
+                    response.Attachments = new List<Attachments>() { CreateAdaptiveCardUsingSdk() };
 
-                // Parse the JSON 
-                AdaptiveCardParseResult result = AdaptiveCard.FromJson(json);
-
-                // Get card from result
-                AdaptiveCard card = result.Card;
-
-                await card;
-                
+                    await turnContext.SendActivity(response);
+                }
 
                 // Optional: check for any parse warnings
                 // This includes things like unknown element "type"
@@ -115,6 +110,32 @@ namespace Microsoft.BotBuilderSamples.Bots
             {
                 await turnContext.SendActivityAsync(MessageFactory.Text(ex.ToString()), cancellationToken);
             }
+        }
+
+        private Attachment CreateAdaptiveCardUsingSDK()
+        {
+            var card = new AdaptiveCard();
+            card.Body.Add(new AdaptiveTextBlock() { Text = "Colour", Size = AdaptiveTextSize.Medium, Weight = AdaptiveTextWeight.Bolder });
+            card.Body.Add(new AdaptiveChoiceSetInput()
+            {
+                Id = "Colour",
+                Style = AdaptiveChoiceInputStyle.Compact,
+                Choices = new List<AdaptiveChoices>(new[] {
+                    new AdaptiveChoice() { Title = "Red", Value = "RED" },
+                    new AdaptiveChoice() { Title = "Green", Value = "GREEN" },
+                    new AdaptiveChoice() { Title = "Blue", Value = "BLUE" }
+                })
+            });
+            card.Body.Add(new AdaptiveTextBlock() { Text = "Registration number", Size = AdaptiveTextSize.Medium, Weight = AdaptiveTextWeight.Bolder });
+            card.Body.Add(new AdaptiveTextInput() { Style = AdaptiveTextInputStyle.Text, Id = "Registrationnumber" });
+            card.Actions.Add(new AdaptiveSumbitAction() { Title = "Sumbit" });
+
+            return new Attachment()
+            {
+                ContentType = AdaptiveCard.ContentType,
+                Content = card
+            };
+
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
