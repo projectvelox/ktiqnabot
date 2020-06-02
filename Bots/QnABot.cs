@@ -16,7 +16,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using EchoBot.OmniChannel;
-using AdaptiveCards;
+using Microsoft.AdaptiveCards;
 
 namespace Microsoft.BotBuilderSamples.Bots
 {
