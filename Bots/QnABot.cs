@@ -28,6 +28,14 @@ namespace Microsoft.BotBuilderSamples.Bots
         protected readonly BotState UserState;
 
         private readonly IConfiguration _configuration;
+        private readonly string[] _cards =
+        {
+            Path.Combine(".", "Resources", "FlightItineraryCard.json"),
+            Path.Combine(".", "Resources", "ImageGalleryCard.json"),
+            Path.Combine(".", "Resources", "LargeWeatherCard.json"),
+            Path.Combine(".", "Resources", "RestaurantCard.json"),
+            Path.Combine(".", "Resources", "SolitaireCard.json"),
+        };
 
         public QnABot(ConversationState conversationState, UserState userState, T dialog, IConfiguration configuration)
         {
@@ -87,13 +95,12 @@ namespace Microsoft.BotBuilderSamples.Bots
                 }
                 */
 
-                if(turnContext.Activity.Type = ActivityTypes.Message)
-                {
-                    var response = turnContext.Activity.CreateReply();
-                    response.Attachments = new List<Attachments>() { CreateAdaptiveCardUsingSdk() };
+                Random r = new Random();
+                var cardAttachment = CreateAdaptiveCardAttachment(_cards[r.Next(_cards.Length)]);
 
-                    await turnContext.SendActivity(response);
-                }
+                //turnContext.Activity.Attachments = new List<Attachment>() { cardAttachment };
+                await turnContext.SendActivityAsync(MessageFactory.Attachment(cardAttachment), cancellationToken);
+                await turnContext.SendActivityAsync(MessageFactory.Text("Please enter any text to see another card."), cancellationToken);
 
                 // Optional: check for any parse warnings
                 // This includes things like unknown element "type"
@@ -112,30 +119,15 @@ namespace Microsoft.BotBuilderSamples.Bots
             }
         }
 
-        private Attachment CreateAdaptiveCardUsingSdk()
+        private static Attachment CreateAdaptiveCardAttachment(string filePath)
         {
-            var card = new AdaptiveCard();
-            card.Body.Add(new AdaptiveTextBlock() { Text = "Colour", Size = AdaptiveTextSize.Medium, Weight = AdaptiveTextWeight.Bolder });
-            card.Body.Add(new AdaptiveChoiceSetInput()
+            var adaptiveCardJson = File.ReadAllText(filePath);
+            var adaptiveCardAttachment = new Attachment()
             {
-                Id = "Colour",
-                Style = AdaptiveChoiceInputStyle.Compact,
-                Choices = new List<AdaptiveChoices>(new[] {
-                    new AdaptiveChoice() { Title = "Red", Value = "RED" },
-                    new AdaptiveChoice() { Title = "Green", Value = "GREEN" },
-                    new AdaptiveChoice() { Title = "Blue", Value = "BLUE" }
-                })
-            });
-            card.Body.Add(new AdaptiveTextBlock() { Text = "Registration number", Size = AdaptiveTextSize.Medium, Weight = AdaptiveTextWeight.Bolder });
-            card.Body.Add(new AdaptiveTextInput() { Style = AdaptiveTextInputStyle.Text, Id = "Registrationnumber" });
-            card.Actions.Add(new AdaptiveSumbitAction() { Title = "Sumbit" });
-
-            return new Attachment()
-            {
-                ContentType = AdaptiveCard.ContentType,
-                Content = card
+                ContentType = "application/vnd.microsoft.card.adaptive",
+                Content = JsonConvert.DeserializeObject(adaptiveCardJson),
             };
-
+            return adaptiveCardAttachment;
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
