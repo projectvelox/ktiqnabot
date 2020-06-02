@@ -95,7 +95,7 @@ namespace Microsoft.BotBuilderSamples.Bots
                 AdaptiveCardParseResult result = AdaptiveCard.FromJson(json);
 
                 // Get card from result
-                AdaptiveCard card = result.Card;
+                await AdaptiveCard card = result.Card;
 
                 // Optional: check for any parse warnings
                 // This includes things like unknown element "type"
