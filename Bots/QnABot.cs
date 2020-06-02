@@ -85,9 +85,9 @@ namespace Microsoft.BotBuilderSamples.Bots
                     OmnichannelBotClient.BridgeBotMessage(replyActivity);
                 }
                 
-                await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
+                //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
-                //await turnContext.SendActivityAsync(replyActivity, cancellationToken);
+                await turnContext.SendActivityAsync(replyActivity, cancellationToken);
 
             }
 
