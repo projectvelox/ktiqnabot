@@ -124,7 +124,6 @@ namespace Microsoft.BotBuilderSamples.Bots
                 {
                     Title = "Ai Help Website - Number Guesser",
                     Subtitle = "Hi Welcome! - Guess a number between 1 and 5",
-                    Images = cardImages1,
                     Tap = btnAiHelpWebsite
                 };
                 // Create an Attachment by calling the
@@ -149,7 +148,6 @@ namespace Microsoft.BotBuilderSamples.Bots
                 {
                     Title = "Based on the Using Dialogs Tutorial",
                     Subtitle = "http://bit.ly/2bRyJMj",
-                    Images = cardImages2,
                     Tap = btnTutorial
                 };
                 Attachment plAttachment2 = plCard2.ToAttachment();
