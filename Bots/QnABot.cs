@@ -112,7 +112,7 @@ namespace Microsoft.BotBuilderSamples.Bots
             }
         }
 
-        private Attachment CreateAdaptiveCardUsingSDK()
+        private Attachment CreateAdaptiveCardUsingSdk()
         {
             var card = new AdaptiveCard();
             card.Body.Add(new AdaptiveTextBlock() { Text = "Colour", Size = AdaptiveTextSize.Medium, Weight = AdaptiveTextWeight.Bolder });
