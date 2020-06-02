@@ -120,7 +120,7 @@ namespace Microsoft.BotBuilderSamples.Bots
                 };
                 // Finally create the Hero Card
                 // adding the image and the CardAction
-                HeroCard plCard1 = new HeroCard()
+                ThumbnailCard plCard1 = new ThumbnailCard()
                 {
                     Title = "Ai Help Website - Number Guesser",
                     Subtitle = "Hi Welcome! - Guess a number between 1 and 5",
@@ -144,7 +144,7 @@ namespace Microsoft.BotBuilderSamples.Bots
                     Title = "http://bit.ly/2bRyJMj",
                     Value = "http://bit.ly/2bRyJMj"
                 };
-                HeroCard plCard2 = new HeroCard()
+                ThumbnailCard plCard2 = new ThumbnailCard()
                 {
                     Title = "Based on the Using Dialogs Tutorial",
                     Subtitle = "http://bit.ly/2bRyJMj",
