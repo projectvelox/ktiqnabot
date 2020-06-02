@@ -95,12 +95,15 @@ namespace Microsoft.BotBuilderSamples.Bots
                 AdaptiveCardParseResult result = AdaptiveCard.FromJson(json);
 
                 // Get card from result
-                await AdaptiveCard card = result.Card;
+                AdaptiveCard card = result.Card;
+
+                return card;
+                
 
                 // Optional: check for any parse warnings
                 // This includes things like unknown element "type"
                 // or unknown properties on element
-                IList<AdaptiveWarning> warnings = result.Warnings;
+                //IList<AdaptiveWarning> warnings = result.Warnings;
 
                 //await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
 
